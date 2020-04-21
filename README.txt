@@ -14,3 +14,6 @@ Run node database to create and populate a mongodb database
 Run node app to start the server.
 open Chrome browser on localhost 8080
 
+Video demo at:
+https://youtu.be/weFoAjA3rCM
+
