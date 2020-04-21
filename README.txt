@@ -12,7 +12,9 @@ To deploy this app in the file explorer navigate to the "Controller" file in the
 open command prompt from this folder. 
 Run node database to create and populate a mongodb database
 Run node app to start the server.
-open Chrome browser on localhost 8080
+open Chrome browser on http://localhost 8080
+
+note run localhost on http not https.
 
 Video demo at:
 https://youtu.be/weFoAjA3rCM
