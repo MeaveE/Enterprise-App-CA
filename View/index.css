@@ -36,9 +36,9 @@
     }
 
     .center{
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
+      display: inline-block;
+      margin-left: 10%;
+      margin-right: 10%;
       width: 50%;
     }
 /* Full-width input fields */
@@ -184,3 +184,37 @@ span.psw {
      width: 100%;
   }
 }
+
+#account-info{
+  display: inline-block;
+  position: absolute;
+  color: silver;
+}
+#loadData{
+  width: 80%;
+  border: 1px double silver;
+}
+ #getfortune{
+   border: 1px double silver;
+ }
+#accountForm{
+  width: 80%;
+  height: 80%;
+  background-color:#002366 !important;
+}
+#accountbtn, #zodiacbtn{
+  background-color: #101010 !important;
+}
+#AccContainer{
+  padding: 15%;
+  background-color:#002366 !important;
+}
+#updatebtn{
+  background-color: silver;
+  color:black !important;
+}
+
+ #Hororscope{
+    display: inline-grid;
+    color: silver;
+ }

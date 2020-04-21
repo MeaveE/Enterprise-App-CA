@@ -11,6 +11,7 @@
 </head>
 <body>
 
+<script> var logginFlag = false; </script>
 <!--Navigation bar-->
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
@@ -24,15 +25,18 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Projects</a></li>
-        <li><a href="#">Contact</a></li>
+        <li class="active"><a href="index.html">Home</a></li>
+        <li><button id="accountbtn" onclick="account()">Account Info</button></li> <!--/onclick that runs scipts that toggles a form under account info-->
+        <li><button id="zodiacbtn" onclick="zodiac()">Zodiac</button></li>
       </ul>
+      <div id = "loginReg">
       <ul class="nav navbar-nav navbar-right">
-        <li><a onclick="document.getElementById('id01').style.display='block'"/><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-         <li><a onclick="document.getElementById('id02').style.display='block'"/><span class="glyphicon glyphicon-log-in"></span> Sign Up</a></li>
+        <li><a onclick="document.getElementById('id01').style.display='block'" id="loginbtn"/><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+         <li><a onclick="document.getElementById('id02').style.display='block'" id="regbtn"/><span class="glyphicon glyphicon-log-in"></span> Sign Up</a></li>
+         <li><a id="logoutbtn" onclick="logginFlag = false;" /><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+         <li><a id="delAccbtn" onclick="logginFlag= false" /><span class="glyphicon glyphicon-log-in"></span> Delete</a></li>
       </ul>
+    </div>
     </div>
   </div>
 </nav>
@@ -42,7 +46,7 @@
 <!--Login Modal-->
 <div id="id01" class="modal">
   
-  <form class="modal-content animate" action="/action_page.php" method="post">
+  <form class="modal-content animate" action="/signIn" method="post">
     <div class="imgcontainer">
       <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
     </div>
@@ -54,10 +58,7 @@
       <label for="psw"><b>Password</b></label>
       <input type="password" placeholder="Enter Password" name="psw" required>
         
-      <button type="submit">Login</button>
-      <label>
-        <input type="checkbox" checked="checked" name="remember"> Remember me
-      </label>
+      <button type="submit" id="submitlog">Login</button>
     </div>
 
     <div class="container" style="background-color:#f1f1f1">
@@ -70,7 +71,7 @@
 <!--Register Modal-->
 <div id="id02" class="modal">
   
-  <form class="modal-content animate" action="/action_page.php" method="post">
+  <form class="modal-content animate" action="/register" method="post">
     <div class="imgcontainer">
       <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
     </div>
@@ -82,7 +83,7 @@
       <label for="psw"><b>Password</b></label>
       <input type="password" placeholder="Enter Password" name="psw" required>
         
-      <button type="submit">Sign Up</button>
+      <button type="submit" id="submitreg">Sign Up</button>
     </div>
 
     <div class="container" style="background-color:#f1f1f1">
@@ -92,8 +93,196 @@
   </form>
 </div>
 
+
+
+
+<script>
+
+$("#submitreg").click(function(){
+  logginFlag = true;
+})
+
+$("#submitlog").click(function(){
+  logginFlag = true;
+})
+
+  document.getElementById("logoutbtn").style.display="none";
+  document.getElementById("delAccbtn").style.display="none";
+
+  console.log(logginFlag);
+
+if(logginFlag){
+  document.getElementById("loginbtn").style.display="none";
+  document.getElementById("regbtn").style.display="none";
+
+  document.getElementById("logoutbtn").style.display="block";
+  document.getElementById("delAccbtn").style.display="block";
+}
+
+$("#logoutbtn").click(function(){
+
+    $.ajax({
+    type:"POST",
+    url:"/logout",
+    success: function(){
+
+    },
+    error: function(){
+      console.log("error");
+    },
+  });
+});
+
+$("#delAccbtn").click(function(){
+
+    $.ajax({
+    type:"POST",
+    url:"/delete",
+    success: function(){
+
+    },
+    error: function(){
+      console.log("error");
+    },
+  });
+});
+
+</script>
+
+
+<div id="account-info">
+  <h2>Account info</h2>
+  <div id="accountinfo">
+    <button id='loadData'>Load Account info</button>
+
+    <form id="accountForm" action="/update" method="post">    
+
+      <div class="AccContainer">
+        <label id="uname"><b>Username</b></label>
+        <input type="text" name="uname" id="AccUname">
+
+        <label id="psw"><b>Password</b></label>
+        <input type="text" name="psw" id="AccPsw">
+          
+        <button type="submit" id="updatebtn">UpDate</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<script>
+
+  document.getElementById("accountinfo").style.display = "none";
+
+  function account(){
+  
+  console.log("accbtn js");
+
+  var x = document.getElementById("accountinfo");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+
+};
+
+  
+$("#loadData").click(function(){
+
+    $.ajax({
+    type:"GET",
+    dataType:"json",
+    url:"/getData",
+    success: function(data){
+      console.log(data.items);
+      document.getElementById("AccUname").value = data.items.username;
+      document.getElementById("AccPsw").value = data.items.password;
+    },
+    error: function(data){
+      console.log("error" + data);
+    },
+  });
+});
+
+/*
+*/
+var uname = document.getElementById("AccUname");
+var psw = document.getElementById("AccPsw");
+document.getElementById("AccUname").value="Username";
+document.getElementById("AccPsw").value="Password";
+
+</script>
+
+<div id="Hororscope">
+  <H2>Horoscopes</H2>
+  <div id="Zodiac">
+      <form action="/api" method="post">
+
+            <label for="zodiac"><b>Zodiac</b></label>
+            <input type="text" placeholder="Enter Zodiac" name="zodiacInp" id="zodiacInp" required>
+
+            <button type="submit" id="getfortune">Get Fortune</button>
+        </form>
+      </div>
+    </div>
+        <div id="results">
+        <div id="date_range">Date Range:</div>
+        <div id="current_date">Current Date:</div>
+        <div id="description">Description:</div>
+        <div id="compatability">Compatability:</div>
+        <div id="mood">Mood: </div>
+        <div id="colour">Color: </div>
+        <div id="lucky_number">Lucky Number: </div>
+        <div id="lucky_time">Lucky Time: </div>
+    </div>
+<script>
+  document.getElementById("Zodiac").style.display = "none";
+  document.getElementById("results").style.display = "none";
+
+  function zodiac(){
+
+  var x = document.getElementById("Zodiac");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+
+};
+
+$("#getfortune").click(function(){
+  document.getElementById("results").style.display = "block";
+  console.log("get fortune client");
+    $.ajax({
+    type:"GET",
+    dataType:"json",
+    url:"/api",
+    success: function(data){
+      console.log(data.items);
+      document.getElementById("date_range").value = data.items.dateRange;
+      document.getElementById("current_date").value = data.items.currentDate;
+      document.getElementById("description").value = data.items.description;
+      document.getElementById("compatability").value = data.items.compatability;
+      document.getElementById("mood").value = data.items.mood;
+      document.getElementById("colour").value = data.items.color;
+      document.getElementById("lucky_number").value = data.items.luckyNumber;
+      document.getElementById("lucky_time").value = data.items.luckyTime;
+    },
+    error: function(data){
+      console.log("error" + data);
+    },
+  });
+});
+
+</script>
+
+
 <footer class="container-fluid text-center">
-  <p>Footer Text</p>
+  <p>Eileen Rattigan C16339313 2020</p>
+   <!-- <script type="text/javascript" src="/Assets/Scripts/client.js"></script>-->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </footer>
 
 </body>
